@@ -9,6 +9,7 @@
             "skipFiles": [
                 "<node_internals>/**"
             ],
+            "env": {},
             "outFiles": [
                 "${workspaceFolder}/dist/**/*.js"
             ],

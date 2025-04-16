@@ -1,2 +1,2 @@
-
-console.log("ts init");
+import builderPattern from "./builderPattern";
+builderPattern()
