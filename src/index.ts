@@ -1,2 +1,3 @@
 import builderPattern from "./builderPattern";
-builderPattern()
+import simpleFactoryPattern from "./simpleFactoryPattern";
+import factoryMethodPattern from "./factoryMethodPattern";

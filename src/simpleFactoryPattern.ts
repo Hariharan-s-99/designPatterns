@@ -1,48 +1,52 @@
+/**
+ * Simple Factory Pattern
+ *
+ * Creates objects without exposing the instantiation logic.
+ * Centralizes object creation in a single factory class.
+ * Client code requests objects by providing a type parameter.
+ *
+ * Components:
+ * - Factory: Central class with static creation methods
+ * - Product Interface: Common interface or abstract class for all products
+ * - Concrete Products: Specific implementations created by the factory
+ */
+
 type CandyType = "sweet" | "spicy";
+
 interface ICandy {
-    size: () => number;
-    cookCandy: () => string;
+    sellCandy: () => string;
 }
 
-class SweetCandyFactory implements ICandy {
-    size() {
-        return 10
-    }
-    cookCandy() {
-        return `cooked and sold a sweet candy with size ${this.size()}`
+//CONCRETE CLASS
+class SweetCandy implements ICandy {
+    sellCandy() {
+        return `cooked and sold a sweet candy`
     }
 }
 
-class SpicyCandyFactory implements ICandy {
-    size() {
-        return 20
-    }
-    cookCandy() {
-        return `cooked and sold a spicy candy with size ${this.size()}`
-    }
-}
-class CandyStore {
-    sellCandy(candyType: CandyType) {
-        return candyFactory.getCandy(candyType)
+//CONCRETE CLASS
+class SpicyCandy implements ICandy {
+    sellCandy() {
+        return `cooked and sold a spicy candy`
     }
 }
 
+//FACTORY CLASS
 class candyFactory {
     static getCandy(candyType: CandyType) {
         switch (candyType) {
             case "sweet":
-                const sweetCandyFactory = new SweetCandyFactory();
-                return sweetCandyFactory.cookCandy();
+                return new SweetCandy();
             case "spicy":
-                const spicyCandyFactory = new SpicyCandyFactory();
-                return spicyCandyFactory.cookCandy();
+                return new SpicyCandy();
             default:
                 throw new Error("Invalid candy type")
         }
     }
 }
 
+//CLIENT STORE
 export default () => {
-    const candyStore = new CandyStore();
-    console.log(candyStore.sellCandy("spicy"))
+    const candyStore = candyFactory.getCandy("spicy");
+    console.log(candyStore.sellCandy())
 }
