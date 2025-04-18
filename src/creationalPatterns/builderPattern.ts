@@ -131,3 +131,111 @@ export default () => {
 
     console.log(resultantUser);
 };
+
+
+// ----------------------------------------------------------------------------------------------
+// EXAMPLE 2
+// ----------------------------------------------------------------------------------------------
+
+/**
+ * Builder Pattern (Robust Implementation with Immutable Builders)
+ *
+ * Definition:
+ * The Builder Pattern allows the step-by-step construction of a complex object using
+ * chained methods. This version ensures immutability by returning a new builder instance
+ * with every method call, which makes it safer and more predictable in multi-step construction.
+ *
+ * Purpose:
+ * - Provides a flexible and readable way to construct complex objects.
+ * - Enhances safety and immutability by using a new instance for each chained call.
+ *
+ * Key Components:
+ * - Product: The complex object under construction (`IInvoice`).
+ * - Builder: Contains methods to incrementally build up the object.
+ * - Immutable Steps: Each setter returns a new builder instance to avoid side effects.
+ */
+
+// -------------------------
+// PRODUCT INTERFACE
+// -------------------------
+
+/**
+ * IInvoice: Represents a business invoice with name, product, and feature.
+ */
+interface IInvoice {
+    name: string;
+    product: string;
+    feature: string;
+}
+
+// -------------------------
+// INVOICE BUILDER (IMMUTABLE BUILDER)
+// -------------------------
+
+/**
+ * InvoiceGenerator<T>: Generic builder class for creating an `IInvoice` object.
+ * 
+ * - Uses Partial<T> to allow progressive building.
+ * - Returns a new instance for each method, ensuring immutability.
+ * - Final build method only works when all required fields are present.
+ */
+class InvoiceGenerator<T extends Partial<IInvoice>> {
+    // Private constructor to enforce controlled instantiation
+    private constructor(private invoice: T) { }
+
+    /**
+     * Static factory method to initialize the builder.
+     */
+    static create() {
+        return new InvoiceGenerator({});
+    }
+
+    /**
+     * Sets the `name` field and returns a new builder instance.
+     */
+    setName(name: string) {
+        return new InvoiceGenerator({ ...this.invoice, name });
+    }
+
+    /**
+     * Sets the `product` field and returns a new builder instance.
+     */
+    setProduct(product: string) {
+        return new InvoiceGenerator({ ...this.invoice, product });
+    }
+
+    /**
+     * Sets the `feature` field and returns a new builder instance.
+     */
+    setFeature(feature: string) {
+        return new InvoiceGenerator({ ...this.invoice, feature });
+    }
+
+    /**
+     * Finalizes and returns the complete invoice object.
+     * Ensures type safety by requiring all fields to be present.
+     */
+    build(this: InvoiceGenerator<IInvoice>) {
+        return this.invoice;
+    }
+}
+
+// -------------------------
+// CLIENT CODE (INVOICE CREATION)
+// -------------------------
+
+/**
+ * Entry point simulating invoice generation.
+ * Demonstrates robust builder usage with immutability and type enforcement.
+ */
+export const builderPattern_2 = () => {
+    const invoiceGenerator = InvoiceGenerator.create();
+
+    const resultantInvoice = invoiceGenerator
+        .setFeature("AI")
+        .setName("QUARTERLY_INVOICE")
+        .setProduct("SALES")
+        .build();
+
+    console.log(resultantInvoice);
+};

@@ -1,4 +1,4 @@
-import builderPattern from "./creationalPatterns/builderPattern";
+import builderPattern, { builderPattern_2 } from "./creationalPatterns/builderPattern";
 import simpleFactoryPattern from "./creationalPatterns/simpleFactoryPattern";
 import abstractFactoryPattern from "./creationalPatterns/abstractFactoryPattern"
 import factoryMethodPattern from "./creationalPatterns/factoryMethodPattern";
