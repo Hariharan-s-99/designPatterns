@@ -1,135 +1,128 @@
 /**
  * Builder Pattern
- *
+ * 
  * Definition:
- * The Builder Pattern is a creational design pattern that allows the step-by-step
- * construction of complex objects. It separates the construction process from the final
- * representation, enabling the same construction process to create different representations.
+ * The Builder Pattern is a creational design pattern that allows you to construct complex objects step by step.
+ * It separates the construction of an object from its representation so that the same construction process
+ * can create different representations.
  *
- * Purpose:
- * Separates the construction of a complex object from its representation.
- * Allows step-by-step construction of different representations using the same building process.
- *
- * Key Components:
- * - Product: The complex object under construction.
- * - Builder Interface (implicitly used): Methods to construct parts of the product.
- * - Concrete Builder: Provides implementation for builder methods and tracks the construction process.
- * - Director (optional): Directs the building process.
+ * This code demonstrates the Builder Design Pattern to construct a `Car` object step-by-step.
+ * It allows flexible and readable object creation, especially useful when the object has many optional properties.
  */
 
 // -------------------------
-// PRODUCT TYPES
+// PRODUCT: Car
 // -------------------------
 
 /**
- * Address: Represents the address details of a user.
+ * Represents a car with several configurable properties.
  */
-type Address = {
-    street: string;
-    doorNo: number;
-    city: string;
-}
+class Car {
+    modelName: string;
+    engineType?: string;
+    color?: string;
+    wheels?: string;
 
-/**
- * User: Represents a user with personal and address details.
- */
-type User = {
-    name: string;
-    age: number;
-    address: Address;
+    /**
+     * Creates a new Car with a required model name.
+     * @param model - The model name of the car.
+     */
+    constructor(model: string) {
+        this.modelName = model;
+    }
 }
 
 // -------------------------
-// USER BUILDER (CONCRETE BUILDER)
+// BUILDER INTERFACE
 // -------------------------
 
 /**
- * buildUser: Constructs a User object step-by-step.
- * Uses method chaining for fluent interface design.
+ * Defines the interface for building a Car.
  */
-class buildUser {
-    private user: Partial<User>; // Partially constructed User object
+interface ICarBuilder {
+    setEngineType(engineType: string): this;
+    setColor(color: string): this;
+    setWheels(wheels: string): this;
+    build(): Car;
+}
 
-    constructor() {
-        this.user = {};
+// -------------------------
+// CONCRETE BUILDER
+// -------------------------
+
+/**
+ * Implements the Car building process using the Builder Pattern.
+ */
+class CarBuilder implements ICarBuilder {
+    private car: Car;
+
+    /**
+     * Initializes a new CarBuilder with a required model name.
+     * @param modelName - The model of the car to build.
+     */
+    constructor(modelName: string) {
+        this.car = new Car(modelName);
     }
 
     /**
-     * Sets the user's name.
+     * Sets the engine type of the car.
+     * @param engineType - The type of engine (e.g., "V6", "Electric").
+     * @returns The builder instance (for method chaining).
      */
-    setName(name: string) {
-        this.user.name = name;
+    setEngineType(engineType: string) {
+        this.car.engineType = engineType;
         return this;
     }
 
     /**
-     * Sets the user's age.
+     * Sets the color of the car.
+     * @param color - The color of the car (e.g., "red", "white").
+     * @returns The builder instance (for method chaining).
      */
-    setAge(age: number) {
-        this.user.age = age;
+    setColor(color: string) {
+        this.car.color = color;
         return this;
     }
 
     /**
-     * Sets the user's address.
+     * Sets the number or type of wheels.
+     * @param wheels - Wheel description (e.g., "4", "Alloy").
+     * @returns The builder instance (for method chaining).
      */
-    setAddress(address: Address) {
-        this.user.address = address;
+    setWheels(wheels: string) {
+        this.car.wheels = wheels;
         return this;
     }
 
     /**
-     * Finalizes and returns the constructed User object.
+     * Returns the fully built Car object.
+     * @returns A complete Car instance.
      */
     build() {
-        return this.user;
+        return this.car;
     }
 }
 
 // -------------------------
-// ADDRESS BUILDER (CONCRETE BUILDER)
+// CLIENT USAGE
 // -------------------------
 
 /**
- * addressBuilder: Constructs an Address object with the given parameters.
- */
-class addressBuilder {
-    private address: Partial<Address>; // Partially constructed Address object
-
-    constructor() {
-        this.address = {};
-    }
-
-    /**
-     * Builds and returns a complete Address object.
-     */
-    build(city: string, doorNo: number, street: string) {
-        this.address.city = city;
-        this.address.doorNo = doorNo;
-        this.address.street = street;
-        return this.address as Address;
-    }
-}
-
-// -------------------------
-// CLIENT CODE (USER CREATOR)
-// -------------------------
-
-/**
- * Entry point simulating a user creation scenario.
- * Demonstrates how builders can be used to incrementally construct objects.
+ * Demonstrates how to use the CarBuilder to construct a Car object.
  */
 export default () => {
-    const address = new addressBuilder();
-    const user = new buildUser();
+    // Instantiate the CarBuilder with the model name "BMW"
+    const car = new CarBuilder("BMW");
 
-    const resultantUser = user
-        .setName("user1")
-        .setAddress(address.build("chennai", 10, "dev 1st street"))
-        .setAge(25)
+    // Configure the car step-by-step using chained methods
+    const resultantCar = car
+        .setColor("white")
+        .setEngineType("V8")
+        .setWheels("4")
         .build();
 
-    console.log(resultantUser);
+    // Output the constructed Car object
+    console.log(resultantCar);
 };
 
 
