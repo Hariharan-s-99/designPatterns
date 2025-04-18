@@ -137,24 +137,6 @@ export default () => {
 // EXAMPLE 2
 // ----------------------------------------------------------------------------------------------
 
-/**
- * Builder Pattern (Robust Implementation with Immutable Builders)
- *
- * Definition:
- * The Builder Pattern allows the step-by-step construction of a complex object using
- * chained methods. This version ensures immutability by returning a new builder instance
- * with every method call, which makes it safer and more predictable in multi-step construction.
- *
- * Purpose:
- * - Provides a flexible and readable way to construct complex objects.
- * - Enhances safety and immutability by using a new instance for each chained call.
- *
- * Key Components:
- * - Product: The complex object under construction (`IInvoice`).
- * - Builder: Contains methods to incrementally build up the object.
- * - Immutable Steps: Each setter returns a new builder instance to avoid side effects.
- */
-
 // -------------------------
 // PRODUCT INTERFACE
 // -------------------------
