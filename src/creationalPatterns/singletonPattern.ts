@@ -52,7 +52,7 @@ export default () => {
     singletonInstance_1.establishConnection();
     console.log(singletonInstance_1.getConnectionCount());
 
-    console.log("----------");
+    console.log("---------------");
 
     // Connection count remains shared across all references
     console.log(singletonInstance_2.getConnectionCount());
