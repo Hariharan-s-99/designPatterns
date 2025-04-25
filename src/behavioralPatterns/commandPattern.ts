@@ -16,8 +16,8 @@
 // -------------------------
 
 interface Command {
-    execute(state: number): number;
-    undo(state: number): number;
+    execute(): number;
+    undo(): number;
 }
 
 // -------------------------
@@ -34,14 +34,14 @@ class Calculator {
     }
 
     executeCommand(command: Command): void {
-        this.state = command.execute(this.state);
+        this.state = command.execute();
         this.Commands.push(command);
     }
 
     undoCommand(): void {
         const lastCommand = this.Commands.pop();
         if (lastCommand) {
-            this.state = lastCommand.undo(this.state);
+            this.state = lastCommand.undo();
         }
     }
 }
@@ -52,31 +52,31 @@ class Calculator {
 
 class Add implements Command {
     constructor(private value: number = 1, private calculator: Calculator) { }
-    execute(state: number): number {
-        return state + this.value;
+    execute(): number {
+        return this.calculator.getState() + this.value;
     }
-    undo(state: number): number {
-        return state - this.value;
+    undo(): number {
+        return this.calculator.getState() - this.value;
     }
 }
 
 class Subtract implements Command {
     constructor(private value: number = 1, private calculator: Calculator) { }
-    execute(state: number): number {
-        return state - this.value;
+    execute(): number {
+        return this.calculator.getState() - this.value;
     }
-    undo(state: number): number {
-        return state + this.value;
+    undo(): number {
+        return this.calculator.getState() + this.value;
     }
 }
 
 class Multiply implements Command {
     constructor(private factor: number, private calculator: Calculator) { }
-    execute(state: number): number {
-        return state * this.factor;
+    execute(): number {
+        return this.calculator.getState() * this.factor;
     }
-    undo(state: number): number {
-        return state / this.factor;
+    undo(): number {
+        return this.calculator.getState() / this.factor;
     }
 }
 
@@ -84,11 +84,11 @@ class Divide implements Command {
     constructor(private divisor: number, private calculator: Calculator) {
         if (divisor === 0) throw new Error("Division by zero is not allowed.");
     }
-    execute(state: number): number {
-        return state / this.divisor;
+    execute(): number {
+        return this.calculator.getState() / this.divisor;
     }
-    undo(state: number): number {
-        return state * this.divisor;
+    undo(): number {
+        return this.calculator.getState() * this.divisor;
     }
 }
 
