@@ -24,10 +24,10 @@ interface Command {
 // COMMAND STACK (INVOKER)
 // -------------------------
 
-class CommandStack {
+class Calculator {
     private Commands: Command[] = [];
 
-    constructor(private state: number) {}
+    constructor(private state: number) { }
 
     getState(): number {
         return this.state;
@@ -51,7 +51,7 @@ class CommandStack {
 // -------------------------
 
 class Add implements Command {
-    constructor(private value: number = 1) {}
+    constructor(private value: number = 1, private calculator: Calculator) { }
     execute(state: number): number {
         return state + this.value;
     }
@@ -61,7 +61,7 @@ class Add implements Command {
 }
 
 class Subtract implements Command {
-    constructor(private value: number = 1) {}
+    constructor(private value: number = 1, private calculator: Calculator) { }
     execute(state: number): number {
         return state - this.value;
     }
@@ -71,7 +71,7 @@ class Subtract implements Command {
 }
 
 class Multiply implements Command {
-    constructor(private factor: number) {}
+    constructor(private factor: number, private calculator: Calculator) { }
     execute(state: number): number {
         return state * this.factor;
     }
@@ -81,7 +81,7 @@ class Multiply implements Command {
 }
 
 class Divide implements Command {
-    constructor(private divisor: number) {
+    constructor(private divisor: number, private calculator: Calculator) {
         if (divisor === 0) throw new Error("Division by zero is not allowed.");
     }
     execute(state: number): number {
@@ -97,25 +97,25 @@ class Divide implements Command {
 // -------------------------
 
 export default () => {
-    const commandStack = new CommandStack(10);
+    const calculator = new Calculator(10);
 
-    console.log("Initial:", commandStack.getState());
+    console.log("Initial:", calculator.getState());
 
-    commandStack.executeCommand(new Add(5));
-    console.log("After Add(5):", commandStack.getState());
+    calculator.executeCommand(new Add(5, calculator));
+    console.log("After Add(5):", calculator.getState());
 
-    commandStack.executeCommand(new Subtract(2));
-    console.log("After Subtract(2):", commandStack.getState());
+    calculator.executeCommand(new Subtract(4, calculator));
+    console.log("After Subtract(4):", calculator.getState());
 
-    commandStack.executeCommand(new Multiply(3));
-    console.log("After Multiply(3):", commandStack.getState());
+    calculator.executeCommand(new Multiply(3, calculator));
+    console.log("After Multiply(3):", calculator.getState());
 
-    commandStack.executeCommand(new Divide(2));
-    console.log("After Divide(2):", commandStack.getState());
+    calculator.executeCommand(new Divide(2, calculator));
+    console.log("After Divide(2):", calculator.getState());
 
-    commandStack.undoCommand();
-    console.log("After Undo:", commandStack.getState());
+    calculator.undoCommand();
+    console.log("After Undo:", calculator.getState());
 
-    commandStack.undoCommand();
-    console.log("After Undo:", commandStack.getState());
+    calculator.undoCommand();
+    console.log("After Undo:", calculator.getState());
 };
