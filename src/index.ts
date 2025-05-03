@@ -7,5 +7,6 @@ import singletonPattern from "./creationalPatterns/singletonPattern"
 import prototypeDesignPattern from "./creationalPatterns/prototypePattern";
 
 //BEHAVIORAL PATTERN
-import observerPattern from "./behavioralPatterns/observerPattern";
 import commandPattern from "./behavioralPatterns/commandPattern";
+import observerPattern from "./behavioralPatterns/observerPattern";
+import statePattern from "./behavioralPatterns/statePattern";
