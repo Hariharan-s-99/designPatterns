@@ -197,10 +197,10 @@ interface IState {
    */
   export default () => {
     const order = new Order();
-    
+  
     order.getState().shipOrder();       // Should be denied — payment not verified
-    order.getState().cancelOrder();     // Moves to CancelledOrderState
     order.getState().verifyPayment();   // Moves to OrderPreparedState
+    order.getState().cancelOrder();     // Moves to CancelledOrderState
     order.getState().shipOrder();       // Should be denied — order cancelled
   };
   
