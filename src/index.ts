@@ -8,5 +8,6 @@ import prototypeDesignPattern from "./creationalPatterns/prototypePattern";
 
 //BEHAVIORAL PATTERN
 import commandPattern from "./behavioralPatterns/commandPattern";
-import observerPattern from "./behavioralPatterns/observerPattern";
 import statePattern from "./behavioralPatterns/statePattern";
+import observerPattern from "./behavioralPatterns/observerPattern";
+import chainOfResponsibilityPattern from "./behavioralPatterns/chainOfResponsibilityPattern";
