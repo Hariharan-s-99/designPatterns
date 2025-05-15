@@ -12,3 +12,4 @@ import statePattern from "./behavioralPatterns/statePattern";
 import chainOfResponsibilityPattern from "./behavioralPatterns/chainOfResponsibilityPattern";
 import observerPattern from "./behavioralPatterns/observerPattern";
 import iteratorPattern from "./behavioralPatterns/iteratorPattern";
+import mediatorPattern from "./behavioralPatterns/mediatorPattern";
