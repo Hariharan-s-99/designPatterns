@@ -47,17 +47,17 @@ abstract class AbstractUser {
    */
   sendMessage(message: string, to?: AbstractUser): void {
     if (!this.mediator) {
-      console.warn(`[WARN][${this.name}] Tried to send a message but is not registered with a mediator.`);
+      console.warn(`⚠️ [WARN][${this.name}] Tried to send a message but is not registered with a mediator.`);
       return;
     }
 
     if (to && to.name === this.name) {
-      console.warn(`[WARN][${this.name}] Cannot send a message to oneself.`);
+      console.warn(`⚠️ [WARN][${this.name}] Cannot send a message to oneself.`);
       return;
     }
 
     const toInfo = to ? `→ ${to.name}` : `→ ALL`;
-    console.log(`[SEND][${this.name}] ${toInfo}: "${message}"`);
+    console.log(`📤 [SEND][${this.name}] ${toInfo}: "${message}"`);
     this.mediator.sendMessage(message, this, to);
   }
 
@@ -80,7 +80,7 @@ abstract class AbstractUser {
  */
 class User extends AbstractUser {
   receive(message: string, from: AbstractUser): void {
-    console.log(`[RECEIVE][${this.name}] Message from ${from.name}: "${message}"`);
+    console.log(`📩 [RECEIVE][${this.name}] Message from ${from.name}: "${message}"`);
   }
 }
 
@@ -103,13 +103,13 @@ class ChatRoomMediator implements IMediator {
   addUser(user: AbstractUser): void {
     const key = user.name.toLowerCase();
     if (this.users.has(key)) {
-      console.warn(`[WARN] User "${user.name}" is already in the chat room.`);
+      console.warn(`⚠️ [WARN] User "${user.name}" is already in the chat room.`);
       return;
     }
 
     this.users.set(key, user);
     user.mediator = this;
-    console.log(`[INFO] ${user.name} has joined the chat room.`);
+    console.log(`✅ [INFO] ${user.name} has joined the chat room.`);
   }
 
   /**
@@ -122,10 +122,10 @@ class ChatRoomMediator implements IMediator {
     if (to) {
       const receiver = this.users.get(to.name.toLowerCase());
       if (receiver) {
-        console.log(`[ROUTE] ${from.name} → ${to.name}`);
+        console.log(`📡 [ROUTE] ${from.name} → ${to.name}`);
         receiver.receive(message, from);
       } else {
-        console.error(`[ERROR] User "${to.name}" not found in the chat room.`);
+        console.error(`❌ [ERROR] User "${to.name}" not found in the chat room.`);
       }
     } else {
       // Broadcast to all users except the sender
