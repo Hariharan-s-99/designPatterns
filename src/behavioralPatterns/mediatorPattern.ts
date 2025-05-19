@@ -159,6 +159,6 @@ export default () => {
 
   bob.sendMessage("Hi Alice!", alice);
   alice.sendMessage("Hey Bob, how are you?", bob);
-  mike.sendMessage("Hi everyone!"); // broadcast
-  bob.sendMessage("Just a note to myself.", bob); // should warn
+  mike.sendMessage("Hi everyone!");
+  bob.sendMessage("Just a note to myself.", bob);
 };
