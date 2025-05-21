@@ -95,7 +95,7 @@ interface Visitable {
    * Creates a TextDocument and applies different visitors (PDF, HTML).
    */
   export default () => {
-    const textDocument = new TextDocument("🗒️ This is a sample text document.");
+    const textDocument = new TextDocument("🗒️Text document contains information about design patterns.");
   
     const pdfExporter = new PdfExporter();
     const htmlExporter = new HtmlExporter();
