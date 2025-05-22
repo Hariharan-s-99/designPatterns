@@ -14,3 +14,4 @@ import observerPattern from "./behavioralPatterns/observerPattern";
 import iteratorPattern from "./behavioralPatterns/iteratorPattern";
 import mediatorPattern from "./behavioralPatterns/mediatorPattern";
 import vistiorPattern from "./behavioralPatterns/visitorPattern";
+import interpreterPattern from "./behavioralPatterns/interpreterPattern";
