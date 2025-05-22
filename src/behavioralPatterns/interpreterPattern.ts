@@ -104,8 +104,8 @@ interface IExpression {
       new NumberExpression(4)
     );
   
-    console.log(`2 + 4 = ${addExpression.interpret()}`);
-    console.log(`10 - 4 = ${subtractExpression.interpret()}`);
-    console.log(`2 * 4 = ${multiplyExpression.interpret()}`);
+    console.log(`➕ 2 + 4 = ${addExpression.interpret()}`);
+    console.log(`➖ 10 - 4 = ${subtractExpression.interpret()}`);
+    console.log(`✖️ 2 * 4 = ${multiplyExpression.interpret()}`);
   };
   
