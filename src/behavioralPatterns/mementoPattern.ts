@@ -98,17 +98,16 @@ class HistoryManager {
 
 export default () => {
 
-// Client Code
 const editor = new TextEditor();
 const historyManager = new HistoryManager(editor);
 
-historyManager.backup(); // Save initial empty state
+historyManager.backup();
 editor.type("Hello, ");
 
-historyManager.backup(); // Save "Hello, " state
+historyManager.backup();
 editor.type("world!");
 
-historyManager.backup(); // Save "Hello, world!" state
+historyManager.backup();
 editor.type(" How are you?");
 
 console.log(`\nFinal content: "${editor.getContent()}"`);
@@ -116,15 +115,15 @@ console.log(`\nFinal content: "${editor.getContent()}"`);
 historyManager.showHistory();
 
 console.log('\nClient: Now, let\'s undo some changes!');
-historyManager.undo(); // Undo " How are you?"
+historyManager.undo();
 console.log(`Current content after undo: "${editor.getContent()}"`);
 
-historyManager.undo(); // Undo "world!"
+historyManager.undo();
 console.log(`Current content after undo: "${editor.getContent()}"`);
 
-historyManager.undo(); // Undo "Hello, "
+historyManager.undo();
 console.log(`Current content after undo: "${editor.getContent()}"`);
 
-historyManager.undo(); // Try to undo more
+historyManager.undo();
 
 }
