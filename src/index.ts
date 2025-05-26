@@ -16,3 +16,4 @@ import mediatorPattern from "./behavioralPatterns/mediatorPattern";
 import vistiorPattern from "./behavioralPatterns/visitorPattern";
 import interpreterPattern from "./behavioralPatterns/interpreterPattern";
 import mementoPattern from "./behavioralPatterns/mementoPattern";
+import templatePattern from "./behavioralPatterns/templatePattern";
