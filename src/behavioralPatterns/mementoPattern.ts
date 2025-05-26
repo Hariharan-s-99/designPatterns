@@ -1,129 +1,53 @@
-// 1. Memento: Represents the saved state of the Originator
-interface EditorMemento {
-    getContent(): string;
-    // Potentially add metadata like timestamp, name, etc.
-    getName(): string;
-    getDate(): string;
+interface IEditorMemento {
+  getContent(): string;
 }
 
-// Concrete Memento implementation
-class ConcreteEditorMemento implements EditorMemento {
-    private readonly state: string;
-    private readonly date: string;
-
-    constructor(state: string) {
-        this.state = state;
-        this.date = new Date().toISOString().slice(0, 19).replace('T', ' ');
-    }
-
-    public getContent(): string {
-        return this.state;
-    }
-
-    public getName(): string {
-        return `${this.date} / (${this.state.substring(0, 15)}...)`;
-    }
-
-    public getDate(): string {
-        return this.date;
-    }
+class ConcreteEditorMemento implements IEditorMemento {
+  constructor(private content: string) {}
+  getContent(): string {
+    return this.content;
+  }
 }
 
-// 2. Originator: The object whose state needs to be saved
 class TextEditor {
-    private content: string;
-
-    constructor(initialContent: string = "") {
-        this.content = initialContent;
-        console.log(`Editor: Initial content is: "${this.content}"`);
-    }
-
-    public type(text: string): void {
-        this.content += text;
-        console.log(`Editor: Appended "${text}". Current content: "${this.content}"`);
-    }
-
-    public getContent(): string {
-        return this.content;
-    }
-
-    // Creates a Memento to save the current state
-    public save(): EditorMemento {
-        console.log('Editor: Saving current state...');
-        return new ConcreteEditorMemento(this.content);
-    }
-
-    // Restores the state from a given Memento
-    public restore(memento: EditorMemento): void {
-        this.content = memento.getContent();
-        console.log(`Editor: Restored state to: "${this.content}"`);
-    }
+  constructor(private content: string) {}
+  type(text: string) {
+    this.content += text;
+  }
+  getContent() {
+    return this.content;
+  }
+  save() {
+    return new ConcreteEditorMemento(this.content);
+  }
+  restore(editorMemento: IEditorMemento) {
+    this.content = editorMemento.getContent();
+  }
 }
 
-// 3. Caretaker: Manages and stores Memento objects
-class HistoryManager {
-    private mementos: EditorMemento[] = [];
-    private editor: TextEditor;
+class EditorHistory {
+  private mementos: IEditorMemento[] = [];
 
-    constructor(editor: TextEditor) {
-        this.editor = editor;
-    }
-
-    public backup(): void {
-        console.log('\nHistoryManager: Saving editor\'s state...');
-        this.mementos.push(this.editor.save());
-    }
-
-    public undo(): void {
-        if (!this.mementos.length) {
-            console.log('HistoryManager: No previous states to restore.');
-            return;
-        }
-
-        const memento = this.mementos.pop();
-        if (memento) {
-            console.log(`HistoryManager: Restoring state to: "${memento.getName()}"`);
-            this.editor.restore(memento);
-        }
-    }
-
-    public showHistory(): void {
-        console.log('\nHistoryManager: Here\'s the history:');
-        for (const memento of this.mementos) {
-            console.log(`- ${memento.getName()}`);
-        }
-    }
+  backup(memento: IEditorMemento) {
+    this.mementos.push(memento);
+  }
+  undo(memento: IEditorMemento) {
+    return this.mementos.pop();
+  }
 }
-
 
 export default () => {
-
-const editor = new TextEditor();
-const historyManager = new HistoryManager(editor);
-
-historyManager.backup();
-editor.type("Hello, ");
-
-historyManager.backup();
-editor.type("world!");
-
-historyManager.backup();
-editor.type(" How are you?");
-
-console.log(`\nFinal content: "${editor.getContent()}"`);
-
-historyManager.showHistory();
-
-console.log('\nClient: Now, let\'s undo some changes!');
-historyManager.undo();
-console.log(`Current content after undo: "${editor.getContent()}"`);
-
-historyManager.undo();
-console.log(`Current content after undo: "${editor.getContent()}"`);
-
-historyManager.undo();
-console.log(`Current content after undo: "${editor.getContent()}"`);
-
-historyManager.undo();
-
-}
+  const textEditor = new TextEditor("");
+  textEditor.type("Hello");
+  textEditor.type(" ");
+  textEditor.type("world");
+  const history = new EditorHistory();
+  history.backup(textEditor);
+  console.log(textEditor.getContent());
+  textEditor.type("mispelled");
+  const previousState = history.undo(textEditor);
+  if (previousState) {
+    textEditor.restore(previousState);
+  }
+  console.log(textEditor.getContent());
+};
