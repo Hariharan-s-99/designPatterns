@@ -35,7 +35,6 @@ interface Image {
     constructor(private filename: string) {}
   
     public display(): void {
-      // Lazy initialization: instantiate RealImage only when needed
       if (!this.realImage) {
         this.realImage = new RealImage(this.filename);
       }
@@ -43,11 +42,9 @@ interface Image {
     }
   }
   
-  // Step 4: Client Code - Uses the proxy instead of accessing RealImage directly
   export default () => {
     const image = new ProxyImage("sample_photo.jpg");
   
-    console.log("Image proxy created.");
   
     // RealImage is not loaded until display() is called
     image.display(); // Loads and displays the image
