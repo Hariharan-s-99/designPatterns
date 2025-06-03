@@ -1,54 +1,78 @@
 /**
- * Proxy Pattern in TypeScript
+ * Proxy Pattern
  * 
- * This example demonstrates a Virtual Proxy that defers the loading of a real image
- * object until it is actually needed.
+ * Purpose:
+ * Provides a surrogate or placeholder for another object to control access to it.
+ * In this example, a **Virtual Proxy** defers the loading of a RealImage object 
+ * until it is actually needed, which is useful when the real object is resource-intensive.
+ * 
+ * Key Components:
+ * - Subject Interface: Declares the common interface for Real and Proxy objects.
+ * - Real Subject: The actual object that performs the real operation (e.g., image loading).
+ * - Proxy: Controls access to the Real Subject and may instantiate it on demand.
  */
 
-// Step 1: Define the Subject Interface
+// -------------------------
+// SUBJECT INTERFACE
+// -------------------------
+
 interface Image {
-    display(): void;
+  display(): void;
+}
+
+// -------------------------
+// REAL SUBJECT
+// -------------------------
+
+class RealImage implements Image {
+  private filename: string;
+
+  constructor(filename: string) {
+    this.filename = filename;
+    this.loadFromDisk(); // Simulate expensive operation
   }
-  
-  // Step 2: Real Subject - The actual object that performs the work
-  class RealImage implements Image {
-    private filename: string;
-  
-    constructor(filename: string) {
-      this.filename = filename;
-      this.loadFromDisk(); // Simulate a costly operation
-    }
-  
-    private loadFromDisk(): void {
-      console.log(`Loading image from disk: ${this.filename}`);
-    }
-  
-    public display(): void {
-      console.log(`Displaying image: ${this.filename}`);
-    }
+
+  // Simulates a costly operation like loading a large image file from disk
+  private loadFromDisk(): void {
+    console.log(`Loading image from disk: ${this.filename}`);
   }
-  
-  // Step 3: Proxy - A substitute that controls access to the RealImage
-  class ProxyImage implements Image {
-    private realImage: RealImage | null = null;
-  
-    constructor(private filename: string) {}
-  
-    public display(): void {
-      if (!this.realImage) {
-        this.realImage = new RealImage(this.filename);
-      }
-      this.realImage.display();
+
+  // Displays the image (assumes it has been loaded)
+  public display(): void {
+    console.log(`Displaying image: ${this.filename}`);
+  }
+}
+
+// -------------------------
+// PROXY
+// -------------------------
+
+class ProxyImage implements Image {
+  private realImage: RealImage | null = null;
+
+  constructor(private filename: string) {}
+
+  // Only loads the real image when needed (lazy initialization)
+  public display(): void {
+    if (!this.realImage) {
+      this.realImage = new RealImage(this.filename);
     }
+    this.realImage.display();
   }
-  
-  export default () => {
-    const image = new ProxyImage("sample_photo.jpg");
-  
-  
-    // RealImage is not loaded until display() is called
-    image.display(); // Loads and displays the image
-    image.display(); // Only displays (image already loaded)
-  }
-  
-  
+}
+
+// -------------------------
+// CLIENT CODE (DEMO)
+// -------------------------
+
+export default () => {
+  const image = new ProxyImage("sample_photo.jpg");
+
+  console.log("Calling display() for the first time:");
+  // Loads the image from disk and then displays it
+  image.display();
+
+  console.log("\nCalling display() a second time:");
+  // Image is already loaded, so it just displays it
+  image.display();
+};
